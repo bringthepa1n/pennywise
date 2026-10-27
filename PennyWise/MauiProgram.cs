@@ -37,7 +37,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<DashboardPage>();
         builder.Services.AddTransient<AddTransactionPage>();
         builder.Services.AddTransient<WebPage>();
-        builder.Services.AddTransient<SettingsPage>();
+        builder.Services.AddTransient<Settings>();
         builder.Services.AddTransient<JsonPage>();
         builder.Services.AddSingleton<AppShell>();
 

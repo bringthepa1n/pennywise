@@ -12,6 +12,7 @@ public partial class DashboardPage : ContentPage
         InitializeComponent();
         BindingContext = _viewModel = viewModel;
 
+        BuildCategoryArt();
         BuildFilterChips();
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
     }
@@ -21,6 +22,26 @@ public partial class DashboardPage : ContentPage
         base.OnAppearing();
         await _viewModel.LoadAsync();
         UpdateChipStates();
+    }
+
+    /// <summary>Category illustrations shown above the filter chips.</summary>
+    private void BuildCategoryArt()
+    {
+        foreach (var category in _viewModel.Categories)
+        {
+            var image = new Image
+            {
+                Source = Services.CategoryArt.ForLabel(category),
+                Aspect = Aspect.AspectFit,
+                WidthRequest = 34,
+                HeightRequest = 34,
+                Margin = new Thickness(0, 0, 10, 6),
+                VerticalOptions = LayoutOptions.Center,
+            };
+
+            SemanticProperties.SetDescription(image, category);
+            CategoryArtFlex.Add(image);
+        }
     }
 
     /// <summary>

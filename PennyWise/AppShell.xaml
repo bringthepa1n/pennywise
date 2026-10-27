@@ -33,7 +33,7 @@
         <ShellContent
             Title="Nastavení"
             Route="settings"
-            ContentTemplate="{DataTemplate views:SettingsPage}" />
+            ContentTemplate="{DataTemplate views:Settings}" />
     </FlyoutItem>
 
     <FlyoutItem Title="JSON data" Route="json">

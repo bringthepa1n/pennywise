@@ -1,7 +1,7 @@
 # PennyWise – správa osobních financí
 
-- **Autor:** `[JMÉNO PŘÍJMENÍ]`
-- **Třída:** `[TŘÍDA]`
+- **Autor:** Andrea Semančinová
+- **Třída:** ITB4
 - **Téma:** Správa osobních financí / transakce
 - **Platforma:** .NET 9, .NET MAUI, cíl Android (testováno na Androidu 10, arm64;
   `SupportedOSPlatformVersion` je 21, takže jde nainstalovat i na starší zařízení)
@@ -39,7 +39,7 @@ obrazovka zobrazuje obsah všech JSON souborů, které aplikace používá.
      se zruší (`e.Cancel = true`) a uživatel dostane `DisplayAlert`
    - tlačítko **Ověřit blokaci** zkusí otevřít `https://www.google.com/` a
      demonstruje blokaci; při chybě načtení se zobrazí offline hláška + „Zkusit znovu“
-4. **Nastavení** (`Views/SettingsPage.xaml`)
+4. **Nastavení** (`Views/Settings.xaml`)
    - tři stavy motivu: Světlý / Tmavý / Podle systému (`AppTheme.Unspecified`)
    - jméno, heslo (`Entry IsPassword`), `Switch` „Zobrazit heslo“
    - živý validátor síly hesla: délka ≥ 8 a výskyt číslic, malých/velkých
@@ -73,7 +73,7 @@ PennyWise/
                  WebViewPolicy, CurrencyFormatter
   ViewModels/    BaseViewModel, DashboardViewModel, AddTransactionViewModel,
                  WebViewModel, SettingsViewModel, JsonViewModel, TransactionItem
-  Views/         DashboardPage, AddTransactionPage, WebPage, SettingsPage, JsonPage
+  Views/         DashboardPage, AddTransactionPage, WebPage, Settings, JsonPage
   Converters/    InverseBooleanConverter
   Resources/     Styles/Colors.xaml, Styles/Styles.xaml,
                  Styles/themes/LightTheme.xaml, Styles/themes/DarkTheme.xaml
@@ -115,7 +115,10 @@ Uložení formuláře navíc drží `IsBusy` a zobrazuje `ActivityIndicator`.
   `SectionTitle`, `CaptionLabel`, `AmountPositive`/`AmountNegative`, `ErrorLabel`.
 - Zakulacené rohy přes `Border` + `StrokeShape="RoundRectangle …"`, žádný `Frame`.
 - Ikony/obrázky: vlastní SVG ikona aplikace a splash (`Resources/AppIcon`,
-  `Resources/Splash`) a kruhové „iniciálové“ odznaky v seznamu transakcí.
+  `Resources/Splash`). V rozhraní se používají 3D ilustrace kategorií
+  (`Resources/Images/*_3d.png`, 256×256, průhledné pozadí): `Image` u každého
+  záznamu v seznamu, proužek ilustrací nad filtry a obrázek v prázdném stavu.
+  Mapování kategorie → obrázek je v `Services/CategoryArt.cs`.
 
 ## Ukládání dat (JSON)
 
@@ -215,13 +218,14 @@ primárně na Release buildu.
 | Release build s AOT (instalace z APK) | všechny obrazovky bez pádu | ✅ |
 | Restart aplikace | data zůstávají z `transactions.json` | ✅ |
 | Otočení na šířku | layout se přizpůsobí, nic se neztratí | ✅ |
+| Ilustrace kategorií | `Image` u záznamů, nad filtry i v prázdném stavu | ✅ |
 
 ## Odevzdání
 
 Možnost B (GitHub): repozitář obsahuje historii commitů, tento README se jménem,
 tématem, popisem a snímky. Do e-mailu učitele:
 
-- **Předmět:** `PRG4 - MAUI Projekt - [JMÉNO PŘÍJMENÍ]`
+- **Předmět:** `PRG4 - MAUI Projekt - Andrea Semančinová`
 - **Obsah:** odkaz na repozitář + krátké průvodní slovo
 
 Záložní ZIP (bez `bin/obj`): `git archive --prefix=PennyWise/ HEAD -o PennyWise.zip`.

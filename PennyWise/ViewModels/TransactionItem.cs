@@ -25,6 +25,9 @@ public class TransactionItem
 
     public string Initials { get; }
 
+    /// <summary>Category artwork shown in the list (MAUI resource name without extension).</summary>
+    public string IconSource => CategoryArt.For(Source.Category);
+
     public string CategoryLabel => Source.CategoryLabel;
 
     public string DateLabel => Source.DateLabel;

@@ -77,6 +77,15 @@
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Rychlé filtry" Style="{StaticResource SectionTitle}" />
 
+                    <!-- Category artwork also appears here, so the illustrations are
+                         the visual anchor for the filters. -->
+                    <FlexLayout
+                        x:Name="CategoryArtFlex"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        JustifyContent="Start"
+                        AlignItems="Center" />
+
                     <FlexLayout
                         x:Name="FilterFlex"
                         Direction="Row"
@@ -118,17 +127,15 @@
                             <Border Style="{StaticResource CardBorder}" Padding="14">
                                 <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
                                     <Border
-                                        Style="{StaticResource BadgeBorder}"
-                                        WidthRequest="42"
-                                        HeightRequest="42"
-                                        Padding="0"
-                                        VerticalOptions="Center"
-                                        BackgroundColor="{StaticResource SurfaceContainerHigh}">
-                                        <Label
-                                            Text="{Binding Initials}"
-                                            Style="{StaticResource BadgeLabel}"
-                                            TextColor="{StaticResource OnSurface}"
-                                            FontSize="14"
+                                        Style="{StaticResource IconTileBorder}"
+                                        WidthRequest="44"
+                                        HeightRequest="44"
+                                        VerticalOptions="Center">
+                                        <Image
+                                            Source="{Binding IconSource}"
+                                            Aspect="AspectFit"
+                                            WidthRequest="34"
+                                            HeightRequest="34"
                                             HorizontalOptions="Center"
                                             VerticalOptions="Center" />
                                     </Border>
@@ -166,10 +173,18 @@
                 <Border
                     Style="{StaticResource MutedBackground}"
                     IsVisible="{Binding HasTransactions, Converter={StaticResource InverseBool}}">
-                    <Label
-                        Text="Pro tento filtr nejsou žádné záznamy."
-                        Style="{StaticResource BodyMutedLabel}"
-                        HorizontalTextAlignment="Center" />
+                    <VerticalStackLayout Spacing="10">
+                        <Image
+                            Source="red_question_mark_3d"
+                            Aspect="AspectFit"
+                            WidthRequest="72"
+                            HeightRequest="72"
+                            HorizontalOptions="Center" />
+                        <Label
+                            Text="Pro tento filtr nejsou žádné záznamy."
+                            Style="{StaticResource BodyMutedLabel}"
+                            HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
                 </Border>
 
             </VerticalStackLayout>

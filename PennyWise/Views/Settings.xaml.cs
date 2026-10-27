@@ -2,11 +2,11 @@ using PennyWise.ViewModels;
 
 namespace PennyWise.Views;
 
-public partial class SettingsPage : ContentPage
+public partial class Settings : ContentPage
 {
     private readonly SettingsViewModel _viewModel;
 
-    public SettingsPage(SettingsViewModel viewModel)
+    public Settings(SettingsViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = _viewModel = viewModel;
