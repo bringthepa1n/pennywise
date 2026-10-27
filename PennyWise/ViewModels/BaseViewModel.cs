@@ -7,10 +7,15 @@ public abstract class BaseViewModel : ObservableObject
     private bool _isBusy;
     private string _title = string.Empty;
 
+    /// <summary>
+    /// Public setter: RefreshView binds IsRefreshing two-way, so XAML needs to
+    /// write it. Release builds use AOT + trimming where a protected setter
+    /// fails with MethodAccessException at runtime.
+    /// </summary>
     public bool IsBusy
     {
         get => _isBusy;
-        protected set
+        set
         {
             if (SetProperty(ref _isBusy, value))
             {

@@ -179,10 +179,19 @@ Release APK pro odevzdání:
 dotnet build -f net9.0-android -c Release -p:AndroidPackageFormat=apk
 ```
 
-Na Linuxu se v `.csproj` automaticky vypíná AOT (`RunAOTCompilation=false` pro
-`IsOSPlatform('linux')`), protože AOT kompilátor volá systémový `/bin/bash` a
-`binutils`, které NixOS nemá. Na Windows ve Visual Studiu se AOT používá
-standardně a APK se sestaví normálně.
+Hotové podepsané APK je v kořeni repozitáře jako `PennyWise-release.apk`
+(Release, s AOT) a instaluje se na Android 6+.
+
+Poznámka k buildu na Linuxu: AOT kompilátor volá systémový `/bin/bash` a
+`binutils`. Pokud je NixOS nevidí, sestav Release s
+`-p:AndroidPackageFormat=apk -p:RunAOTCompilation=false` (výsledné APK se chová
+stejně) nebo APK sestav ve Visual Studiu na Windows.
+
+Všechny settery ve ViewModelech, které XAML zapisuje (`IsBusy`, `Password`,
+`ShowPassword`, `Name`, `Address`, …), musí být `public`. Release build
+s AOT a trimováním jinak za běhu skončí `MethodAccessException` – v Debug se
+to neprojeví, protože reflexe tam není omezená. To je důvod, proč se ladí
+primárně na Release buildu.
 
 ## Testovací scénář
 
@@ -203,6 +212,7 @@ standardně a APK se sestaví normálně.
 | Validátor hesla | úroveň Slabé/Průměrné/Silné se mění po znacích | ✅ |
 | Uložení profilu | `profile.json` s hashem a solí, bez hesla | ✅ |
 | Poškozený JSON | obrazovka JSON ohlásí „Soubor je poškozený“ | ✅ |
+| Release build s AOT (instalace z APK) | všechny obrazovky bez pádu | ✅ |
 | Restart aplikace | data zůstávají z `transactions.json` | ✅ |
 | Otočení na šířku | layout se přizpůsobí, nic se neztratí | ✅ |
 

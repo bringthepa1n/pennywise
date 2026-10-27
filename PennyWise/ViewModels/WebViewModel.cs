@@ -24,18 +24,21 @@ public class WebViewModel : BaseViewModel
 
     public string StartUrl => WebViewPolicy.StartUrl;
 
-    /// <summary>URL the WebView should show. Changing it reloads the page.</summary>
+    /// <summary>
+    /// URL the WebView should show. The setter is public because the address
+    /// Entry binds to it; release AOT builds reject non-public setters.
+    /// </summary>
     public string Address
     {
         get => _address;
-        private set => SetProperty(ref _address, value);
+        set => SetProperty(ref _address, value);
     }
 
     /// <summary>Increments on every retry so the page can force a reload.</summary>
     public int ReloadToken
     {
         get => _reloadToken;
-        private set => SetProperty(ref _reloadToken, value);
+        set => SetProperty(ref _reloadToken, value);
     }
 
     public bool IsLoading
