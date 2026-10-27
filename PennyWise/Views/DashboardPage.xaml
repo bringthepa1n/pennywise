@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PennyWise.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PennyWise.ViewModels"
+    x:DataType="vm:DashboardViewModel"
+    Title="Přehled">
+
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+        <ScrollView>
+            <VerticalStackLayout Style="{StaticResource PagePadding}">
+
+                <!-- Header -->
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="PennyWise" Style="{StaticResource CaptionLabel}" />
+                        <Label Text="Přehled financí" Style="{StaticResource ScreenTitle}" />
+                    </VerticalStackLayout>
+                    <Button
+                        Grid.Column="1"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="+ Přidat"
+                        Command="{Binding AddCommand}"
+                        VerticalOptions="Center" />
+                </Grid>
+
+                <!-- Hero balance card -->
+                <Border Style="{StaticResource HeroCardBorder}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Zůstatek" Style="{StaticResource CaptionLabel}" />
+                        <Label
+                            Text="{Binding Balance, StringFormat='{0:N0} Kč'}"
+                            Style="{StaticResource HeroAmountLabel}" />
+                        <Label Text="příjmy minus výdaje za všechny záznamy" Style="{StaticResource CaptionLabel}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Key figures grid: fixed columns, star width, Auto height -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto">
+                    <Border Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Příjmy" Style="{StaticResource CaptionLabel}" />
+                            <Label
+                                Text="{Binding Income, StringFormat='{0:N0} Kč'}"
+                                Style="{StaticResource AmountPositive}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Výdaje" Style="{StaticResource CaptionLabel}" />
+                            <Label
+                                Text="{Binding Expenses, StringFormat='{0:N0} Kč'}"
+                                Style="{StaticResource AmountNegative}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!-- Budget progress -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Čerpání měsíčního rozpočtu" Style="{StaticResource SectionTitle}" FontSize="15" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding BudgetProgress, StringFormat='{0:P0}'}"
+                                Style="{StaticResource CaptionLabel}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                        <ProgressBar Progress="{Binding BudgetProgress}" HeightRequest="8" />
+                        <Label Text="{Binding BudgetLabel}" Style="{StaticResource BodyMutedLabel}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Quick actions / filters -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Rychlé filtry" Style="{StaticResource SectionTitle}" />
+
+                    <FlexLayout
+                        x:Name="FilterFlex"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        JustifyContent="Start"
+                        AlignItems="Center" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label
+                            Text="Jen velké výdaje"
+                            Style="{StaticResource BodyMutedLabel}"
+                            VerticalOptions="Center" />
+                        <Switch
+                            Grid.Column="1"
+                            IsToggled="{Binding OnlyLargeExpenses}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Label Text="{Binding FilterSummary}" Style="{StaticResource CaptionLabel}" VerticalOptions="Center" />
+                        <Button
+                            Grid.Column="1"
+                            Text="Zrušit filtr"
+                            Style="{StaticResource OutlinedButton}"
+                            Command="{Binding ClearFiltersCommand}"
+                            Padding="14,8"
+                            MinimumHeightRequest="38" />
+                    </Grid>
+                </VerticalStackLayout>
+
+                <!-- Transaction list -->
+                <Label Text="Poslední záznamy" Style="{StaticResource SectionTitle}" />
+
+                <VerticalStackLayout
+                    x:Name="TransactionsStack"
+                    Spacing="10"
+                    BindableLayout.ItemsSource="{Binding VisibleTransactions}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:TransactionItem">
+                            <Border Style="{StaticResource CardBorder}" Padding="14">
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                    <Border
+                                        Style="{StaticResource BadgeBorder}"
+                                        WidthRequest="42"
+                                        HeightRequest="42"
+                                        Padding="0"
+                                        VerticalOptions="Center"
+                                        BackgroundColor="{StaticResource SurfaceContainerHigh}">
+                                        <Label
+                                            Text="{Binding Initials}"
+                                            Style="{StaticResource BadgeLabel}"
+                                            TextColor="{StaticResource OnSurface}"
+                                            FontSize="14"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                    </Border>
+
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label Text="{Binding Title}" Style="{StaticResource TransactionTitle}" />
+                                        <Label Style="{StaticResource CaptionLabel}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding CategoryLabel}" />
+                                                    <Span Text=" · " />
+                                                    <Span Text="{Binding DateLabel}" />
+                                                    <Span Text=" · " />
+                                                    <Span Text="{Binding PriorityLabel}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout Grid.Column="2" Spacing="2" HorizontalOptions="End">
+                                        <Label
+                                            Text="{Binding SignedAmount}"
+                                            Style="{Binding AmountStyle}" />
+                                        <Label
+                                            Text="{Binding FlagsLabel}"
+                                            Style="{StaticResource CaptionLabel}"
+                                            HorizontalTextAlignment="End" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <Border
+                    Style="{StaticResource MutedBackground}"
+                    IsVisible="{Binding HasTransactions, Converter={StaticResource InverseBool}}">
+                    <Label
+                        Text="Pro tento filtr nejsou žádné záznamy."
+                        Style="{StaticResource BodyMutedLabel}"
+                        HorizontalTextAlignment="Center" />
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

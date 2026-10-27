@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PennyWise.Views.JsonPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PennyWise.ViewModels"
+    x:DataType="vm:JsonViewModel"
+    Title="JSON data">
+
+    <RefreshView Command="{Binding ReloadCommand}" Refreshing="OnRefreshing">
+        <ScrollView>
+            <VerticalStackLayout Style="{StaticResource PagePadding}" Spacing="16">
+
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Uložená data" Style="{StaticResource ScreenTitle}" />
+                    <Label
+                        Style="{StaticResource BodyMutedLabel}"
+                        Text="Obsah souborů, které aplikace zapisuje do AppDataDirectory. Poškozený soubor se zobrazí i s chybovou hláškou." />
+                </VerticalStackLayout>
+
+                <Border Style="{StaticResource MutedBackground}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Složka" Style="{StaticResource FieldLabel}" />
+                        <Label Text="{Binding Folder}" Style="{StaticResource CaptionLabel}" />
+                        <Label Text="{Binding FilesSummary}" Style="{StaticResource CaptionLabel}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button
+                    Text="Obnovit obsah"
+                    Style="{StaticResource SecondaryButton}"
+                    Command="{Binding ReloadCommand}" />
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Files}" Spacing="14">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:JsonFileView">
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="10">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="{Binding FileName}" Style="{StaticResource SectionTitle}" FontSize="15" />
+                                        <Border Grid.Column="1" Style="{StaticResource BadgeBorder}">
+                                            <Label Text="{Binding StatusText}" Style="{StaticResource BadgeLabel}" />
+                                        </Border>
+                                    </Grid>
+
+                                    <Label
+                                        Text="{Binding Error}"
+                                        Style="{StaticResource ErrorLabel}"
+                                        IsVisible="{Binding HasError}" />
+
+                                    <Border Style="{StaticResource MutedBackground}" Padding="12">
+                                        <ScrollView Orientation="Both" MaximumHeightRequest="280">
+                                            <Label Text="{Binding Content}" Style="{StaticResource CodeLabel}" />
+                                        </ScrollView>
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

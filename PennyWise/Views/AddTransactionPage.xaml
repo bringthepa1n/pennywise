@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PennyWise.Views.AddTransactionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PennyWise.ViewModels"
+    x:DataType="vm:AddTransactionViewModel"
+    Title="Nový záznam">
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView>
+            <VerticalStackLayout Style="{StaticResource PagePadding}" Spacing="18">
+
+                <Label Text="Přidat nový záznam" Style="{StaticResource ScreenTitle}" />
+
+                <!-- Kind -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Druh záznamu" Style="{StaticResource FieldLabel}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button
+                            Text="Výdaj"
+                            Command="{Binding ToggleKindCommand}"
+                            CommandParameter="Expense"
+                            Style="{StaticResource SecondaryButton}" />
+                        <Button
+                            Grid.Column="1"
+                            Text="Příjem"
+                            Command="{Binding ToggleKindCommand}"
+                            CommandParameter="Income"
+                            Style="{StaticResource SecondaryButton}" />
+                    </Grid>
+                    <Label Text="{Binding KindSummary}" Style="{StaticResource CaptionLabel}" />
+                </VerticalStackLayout>
+
+                <!-- Title -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Název položky" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource InputBorder}">
+                        <Entry
+                            Text="{Binding FormTitle}"
+                            Placeholder="Např. Nákup potravin"
+                            MaxLength="60"
+                            ReturnType="Next"
+                            TextChanged="OnTitleTextChanged" />
+                    </Border>
+                    <Label
+                        Text="{Binding TitleError}"
+                        Style="{StaticResource ErrorLabel}"
+                        IsVisible="{Binding HasTitleError}" />
+                    <Label
+                        Text="{Binding TitleLiveFeedback}"
+                        Style="{StaticResource CaptionLabel}" />
+                </VerticalStackLayout>
+
+                <!-- Amount -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Částka (Kč)" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource InputBorder}">
+                        <Entry
+                            Text="{Binding AmountText}"
+                            Placeholder="0"
+                            Keyboard="Numeric"
+                            TextChanged="OnAmountTextChanged" />
+                    </Border>
+                    <Label
+                        Text="{Binding AmountError}"
+                        Style="{StaticResource ErrorLabel}"
+                        IsVisible="{Binding HasAmountError}" />
+                    <Label Text="{Binding AmountPreview}" Style="{StaticResource CaptionLabel}" />
+                </VerticalStackLayout>
+
+                <!-- Category -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Kategorie" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource InputBorder}">
+                        <Picker
+                            ItemsSource="{Binding Categories}"
+                            SelectedIndex="{Binding SelectedCategoryIndex}"
+                            Title="Vyber kategorii" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Priority slider -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Priorita" Style="{StaticResource FieldLabel}" />
+                            <Border Grid.Column="1" Style="{StaticResource BadgeBorder}">
+                                <Label Text="{Binding PriorityWhole}" Style="{StaticResource BadgeLabel}" />
+                            </Border>
+                        </Grid>
+                        <Slider
+                            x:Name="PrioritySlider"
+                            Minimum="1"
+                            Maximum="5"
+                            Value="{Binding Priority}"
+                            ValueChanged="OnPriorityValueChanged" />
+                        <Label Text="{Binding PriorityLabel}" Style="{StaticResource CaptionLabel}" />
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Text="1" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" />
+                            <Label
+                                Grid.Column="1"
+                                Text="Priorita ovlivní označení záznamu"
+                                FontSize="11"
+                                HorizontalTextAlignment="Center"
+                                TextColor="{StaticResource OnSurfaceVariant}" />
+                            <Label Grid.Column="2" Text="5" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Options -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Pravidelná položka" VerticalOptions="Center" />
+                            <CheckBox
+                                Grid.Column="1"
+                                IsChecked="{Binding IsRecurring}"
+                                CheckedChanged="OnOptionToggled" />
+                        </Grid>
+                        <BoxView Style="{StaticResource DividerLine}" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Důležité" VerticalOptions="Center" />
+                            <Switch
+                                Grid.Column="1"
+                                IsToggled="{Binding IsImportant}"
+                                Toggled="OnOptionToggled" />
+                        </Grid>
+                        <BoxView Style="{StaticResource DividerLine}" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                <Label Text="Simulovat selhání" />
+                                <Label Text="Pro testování chybové cesty" Style="{StaticResource CaptionLabel}" />
+                            </VerticalStackLayout>
+                            <Switch
+                                Grid.Column="1"
+                                IsToggled="{Binding SimulateFailure}" />
+                        </Grid>
+                        <BoxView Style="{StaticResource DividerLine}" />
+                        <Label Text="{Binding OptionSummary}" Style="{StaticResource CaptionLabel}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label
+                    Text="{Binding StatusMessage}"
+                    Style="{StaticResource BodyMutedLabel}"
+                    IsVisible="{Binding HasStatusMessage}" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Sticky action bar -->
+        <Border
+            Grid.Row="1"
+            Padding="20,12,20,20"
+            BackgroundColor="{StaticResource SurfaceContainerLow}"
+            Stroke="{StaticResource OutlineVariant}"
+            StrokeThickness="1"
+            StrokeShape="Rectangle">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                <ActivityIndicator
+                    WidthRequest="24"
+                    HeightRequest="24"
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    VerticalOptions="Center" />
+                <Button
+                    Grid.Column="1"
+                    Text="Uložit záznam"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding SaveCommand}" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

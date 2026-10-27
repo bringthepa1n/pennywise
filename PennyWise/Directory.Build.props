@@ -1,0 +1,23 @@
+<Project>
+
+  <!--
+    Local (Linux / NixOS) build paths only. This file is intentionally NOT
+    required on Windows: the Android SDK and the JDK are picked up from the
+    Visual Studio installation (Tools > Options > Xamarin > Android Settings).
+
+    Override on the command line if your SDK lives elsewhere:
+      dotnet build -f net9.0-android -p:AndroidSdkDirectory=/path/to/sdk
+  -->
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(AndroidSdkDirectory)' == '' And Exists('$(HOME)/Android/Sdk')">
+    <AndroidSdkDirectory>$(HOME)/Android/Sdk</AndroidSdkDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(JavaSdkDirectory)' == '' And Exists('$(HOME)/.config/pennywise/java-home.txt')">
+    <JavaSdkDirectory>$([System.IO.File]::ReadAllText('$(HOME)/.config/pennywise/java-home.txt').Trim())</JavaSdkDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(JavaSdkDirectory)' == '' And '$(JAVA_HOME)' != ''">
+    <JavaSdkDirectory>$(JAVA_HOME)</JavaSdkDirectory>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PennyWise.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:PennyWise.Views"
+    Title="PennyWise"
+    FlyoutBehavior="Flyout"
+    FlyoutWidth="300">
+
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="24,28,24,20" Spacing="4">
+            <Label Text="PennyWise" FontFamily="OpenSansSemibold" FontSize="24" TextColor="{StaticResource Primary}" />
+            <Label Text="Osobní finance přehledně" Style="{StaticResource CaptionLabel}" />
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <FlyoutItem Title="Přehled" Route="dashboard">
+        <ShellContent
+            Title="Přehled"
+            Route="dashboard"
+            ContentTemplate="{DataTemplate views:DashboardPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Online kurzy" Route="rates">
+        <ShellContent
+            Title="Online kurzy"
+            Route="rates"
+            ContentTemplate="{DataTemplate views:WebPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Nastavení" Route="settings">
+        <ShellContent
+            Title="Nastavení"
+            Route="settings"
+            ContentTemplate="{DataTemplate views:SettingsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="JSON data" Route="json">
+        <ShellContent
+            Title="JSON data"
+            Route="json"
+            ContentTemplate="{DataTemplate views:JsonPage}" />
+    </FlyoutItem>
+
+</Shell>

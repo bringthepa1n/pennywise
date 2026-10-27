@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PennyWise.Views.WebPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PennyWise.ViewModels"
+    x:DataType="vm:WebViewModel"
+    Title="Online kurzy">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+        <!-- Description -->
+        <VerticalStackLayout Padding="20,16,20,12" Spacing="4">
+            <Label Text="Kurzy devizového trhu" Style="{StaticResource ScreenTitle}" />
+            <Label
+                Style="{StaticResource BodyMutedLabel}"
+                Text="Živý kurzovní lístek České národní banky (www.cnb.cz). Aplikace záměrně povoluje jen stránky této domény – jiný web zablokuje a upozorní dialogem." />
+        </VerticalStackLayout>
+
+        <!-- Address bar + status -->
+        <Grid
+            Grid.Row="1"
+            Padding="20,0,20,10"
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="8">
+            <Border Style="{StaticResource InputBorder}" Padding="12,0">
+                <Entry
+                    Text="{Binding Address}"
+                    Placeholder="https://www.cnb.cz/…"
+                    Keyboard="Url"
+                    ReturnType="Go"
+                    IsReadOnly="True"
+                    FontSize="13" />
+            </Border>
+            <Button
+                Grid.Column="1"
+                Text="Ověřit blokaci"
+                Style="{StaticResource OutlinedButton}"
+                Clicked="OnTestBlockingClicked"
+                Padding="14,8"
+                MinimumHeightRequest="40" />
+        </Grid>
+
+        <!-- WebView with loading state -->
+        <Grid Grid.Row="2">
+            <WebView
+                x:Name="CnBWebView"
+                Source="{Binding StartUrl}"
+                Navigating="OnNavigating"
+                Navigated="OnNavigated"
+                />
+
+            <Border
+                IsVisible="{Binding IsLoading}"
+                BackgroundColor="#99000000"
+                StrokeThickness="0"
+                StrokeShape="Rectangle">
+                <VerticalStackLayout VerticalOptions="Center" Spacing="12" Padding="32">
+                    <ActivityIndicator IsRunning="{Binding IsLoading}" HeightRequest="40" WidthRequest="40" />
+                    <Label
+                        Text="Načítám kurzovní lístek ČNB…"
+                        TextColor="White"
+                        HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+        <!-- Error / retry bar -->
+        <Border
+            Grid.Row="3"
+            IsVisible="{Binding HasError}"
+            BackgroundColor="{StaticResource ErrorContainer}"
+            StrokeThickness="0"
+            StrokeShape="Rectangle"
+            Padding="20,12">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <Label
+                    Text="{Binding LastError}"
+                    TextColor="{StaticResource OnErrorContainer}"
+                    VerticalOptions="Center"
+                    FontSize="13" />
+                <Button
+                    Grid.Column="1"
+                    Text="Zkusit znovu"
+                    Style="{StaticResource WarningButton}"
+                    Command="{Binding RetryCommand}"
+                    Padding="16,8"
+                    MinimumHeightRequest="40" />
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,45 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# .NET
+*.dll
+*.pdb
+*.mdb
+*.cache
+*.tlog
+*.binlog
+project.lock.json
+artifacts/
+
+# Android
+*.apk
+*.aab
+*.keystore
+*.jks
+*.idsig
+debug.keystore
+
+# NixOS / Linux tooling leftovers
+result
+result-*
+.direnv/
+.envrc
+nix-shell
+.DS_Store
+
+# Local editor scratch
+*.swp
+*~
+.obsidian/workspace*

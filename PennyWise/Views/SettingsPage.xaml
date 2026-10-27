@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PennyWise.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PennyWise.ViewModels"
+    x:DataType="vm:SettingsViewModel"
+    Title="Nastavení">
+
+    <ScrollView>
+        <VerticalStackLayout Style="{StaticResource PagePadding}" Spacing="18">
+
+            <Label Text="Nastavení" Style="{StaticResource ScreenTitle}" />
+
+            <!-- Theme -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Vzhled aplikace" Style="{StaticResource SectionTitle}" />
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            Text="Vyber světlý, tmavý motiv nebo ponech volbu systému."
+                            Style="{StaticResource BodyMutedLabel}" />
+
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                            <Button
+                                Text="Světlý"
+                                Command="{Binding SwitchThemeCommand}"
+                                CommandParameter="Light"
+                                Style="{StaticResource SecondaryButton}"
+                                FontSize="13" />
+                            <Button
+                                Grid.Column="1"
+                                Text="Tmavý"
+                                Command="{Binding SwitchThemeCommand}"
+                                CommandParameter="Dark"
+                                Style="{StaticResource SecondaryButton}"
+                                FontSize="13" />
+                            <Button
+                                Grid.Column="2"
+                                Text="Systém"
+                                Command="{Binding SwitchThemeCommand}"
+                                CommandParameter="System"
+                                Style="{StaticResource SecondaryButton}"
+                                FontSize="13" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Aktuální volba" Style="{StaticResource CaptionLabel}" VerticalOptions="Center" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding ThemeLabel}"
+                                Style="{StaticResource BadgeLabel}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Profile + password -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Profil a zabezpečení" Style="{StaticResource SectionTitle}" />
+
+                <Border
+                    IsVisible="{Binding HasLoadWarning}"
+                    Style="{StaticResource CardBorder}"
+                    BackgroundColor="{StaticResource Warning}"
+                    Padding="14">
+                    <Label Text="{Binding LoadWarning}" TextColor="White" FontSize="13" />
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="14">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Jméno" Style="{StaticResource FieldLabel}" />
+                            <Border Style="{StaticResource InputBorder}">
+                                <Entry Text="{Binding Name}" Placeholder="Jan Novák" MaxLength="40" />
+                            </Border>
+                            <Label
+                                Text="Jméno je povinné."
+                                Style="{StaticResource ErrorLabel}"
+                                IsVisible="{Binding HasNameError}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Heslo" Style="{StaticResource FieldLabel}" />
+                            <Border Style="{StaticResource InputBorder}">
+                                <Entry
+                                    Text="{Binding Password}"
+                                    IsPassword="{Binding ShowPassword, Converter={StaticResource InverseBool}}"
+                                    Placeholder="Alespoň 8 znaků"
+                                    TextChanged="OnPasswordTextChanged" />
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Zobrazit heslo" VerticalOptions="Center" />
+                                <Switch
+                                    Grid.Column="1"
+                                    IsToggled="{Binding ShowPassword}"
+                                    Toggled="OnShowPasswordToggled" />
+                            </Grid>
+
+                            <ProgressBar Progress="{Binding StrengthProgress}" HeightRequest="8" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Síla hesla" Style="{StaticResource CaptionLabel}" />
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding StrengthLabel}"
+                                    Style="{StaticResource CaptionLabel}"
+                                    FontFamily="OpenSansSemibold" />
+                            </Grid>
+
+                            <!-- Live rule checklist -->
+                            <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Start">
+                                <Border Style="{StaticResource BadgeBorder}" Margin="0,0,6,6" BackgroundColor="{Binding RuleLengthColor}">
+                                    <Label Text="8+ znaků" Style="{StaticResource RuleBadgeLabel}" />
+                                </Border>
+                                <Border Style="{StaticResource BadgeBorder}" Margin="0,0,6,6" BackgroundColor="{Binding RuleDigitColor}">
+                                    <Label Text="Číslice" Style="{StaticResource RuleBadgeLabel}" />
+                                </Border>
+                                <Border Style="{StaticResource BadgeBorder}" Margin="0,0,6,6" BackgroundColor="{Binding RuleLowerColor}">
+                                    <Label Text="Malá písmena" Style="{StaticResource RuleBadgeLabel}" />
+                                </Border>
+                                <Border Style="{StaticResource BadgeBorder}" Margin="0,0,6,6" BackgroundColor="{Binding RuleUpperColor}">
+                                    <Label Text="Velká písmena" Style="{StaticResource RuleBadgeLabel}" />
+                                </Border>
+                                <Border Style="{StaticResource BadgeBorder}" Margin="0,0,6,6" BackgroundColor="{Binding RuleSpecialColor}">
+                                    <Label Text="Speciální znak" Style="{StaticResource RuleBadgeLabel}" />
+                                </Border>
+                            </FlexLayout>
+
+                            <Label
+                                Text="Heslo se neukládá v otevřené podobě – do profile.json jde pouze PBKDF2-SHA256 hash se solí."
+                                Style="{StaticResource CaptionLabel}" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            Text="Uložit profil do JSON"
+                            Style="{StaticResource PrimaryButton}"
+                            Command="{Binding SaveProfileCommand}" />
+
+                        <Label
+                            Text="{Binding StoredPasswordLabel}"
+                            Style="{StaticResource CaptionLabel}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Budget -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Měsíční rozpočet" Style="{StaticResource SectionTitle}" />
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding BudgetText}" Style="{StaticResource CardAmountLabel}" />
+                        <Slider
+                            Minimum="2000"
+                            Maximum="80000"
+                            Value="{Binding BudgetValue}"
+                            ValueChanged="OnBudgetValueChanged" />
+                        <Button
+                            Text="Uložit rozpočet"
+                            Style="{StaticResource SecondaryButton}"
+                            Command="{Binding SaveBudgetCommand}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <Label
+                Text="{Binding StatusMessage}"
+                Style="{StaticResource BodyMutedLabel}"
+                IsVisible="{Binding HasStatus}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

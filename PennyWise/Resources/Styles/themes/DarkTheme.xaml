@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    x:Class="PennyWise.Resources.Styles.DarkTheme"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Dark theme roles (Material Design 3 tonal palette, see Colors.xaml). -->
+    <Color x:Key="Primary">#96D5B4</Color>
+    <Color x:Key="OnPrimary">#003824</Color>
+    <Color x:Key="PrimaryContainer">#0F5238</Color>
+    <Color x:Key="OnPrimaryContainer">#B1F1CE</Color>
+    <Color x:Key="Secondary">#B4CCBD</Color>
+    <Color x:Key="OnSecondary">#203528</Color>
+    <Color x:Key="SecondaryContainer">#364B3E</Color>
+    <Color x:Key="OnSecondaryContainer">#D0E8D7</Color>
+    <Color x:Key="Tertiary">#A3CDDA</Color>
+    <Color x:Key="OnTertiary">#033540</Color>
+    <Color x:Key="TertiaryContainer">#224C57</Color>
+    <Color x:Key="OnTertiaryContainer">#BFE9F7</Color>
+    <Color x:Key="Error">#FFB4AB</Color>
+    <Color x:Key="OnError">#690005</Color>
+    <Color x:Key="ErrorContainer">#93000A</Color>
+    <Color x:Key="OnErrorContainer">#FFDAD6</Color>
+    <Color x:Key="Surface">#0F1511</Color>
+    <Color x:Key="OnSurface">#DEE4DF</Color>
+    <Color x:Key="SurfaceVariant">#404943</Color>
+    <Color x:Key="OnSurfaceVariant">#C0C9C1</Color>
+    <Color x:Key="SurfaceContainerLowest">#0A0F0C</Color>
+    <Color x:Key="SurfaceContainerLow">#171D1A</Color>
+    <Color x:Key="SurfaceContainer">#1B211E</Color>
+    <Color x:Key="SurfaceContainerHigh">#262B28</Color>
+    <Color x:Key="Outline">#8A938C</Color>
+    <Color x:Key="OutlineVariant">#404943</Color>
+    <Color x:Key="Positive">#7FDBAB</Color>
+    <Color x:Key="Negative">#FFB4AB</Color>
+    <Color x:Key="Warning">#F2BD6B</Color>
+
+</ResourceDictionary>

@@ -1,0 +1,23 @@
+* text=auto eol=lf
+
+*.sln        text eol=crlf
+*.csproj     text eol=crlf
+*.cs         text diff=csharp eol=lf
+*.xaml       text diff=xml eol=lf
+*.json       text eol=lf
+*.md         text eol=lf
+*.xml        text eol=lf
+*.props      text eol=lf
+*.targets    text eol=lf
+*.sh         text eol=lf
+
+*.png        binary
+*.jpg        binary
+*.jpeg       binary
+*.gif        binary
+*.ttf        binary
+*.otf        binary
+*.pdf        binary
+*.zip        binary
+*.apk        binary
+*.aab        binary
