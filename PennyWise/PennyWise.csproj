@@ -21,6 +21,11 @@
 
 		<WindowsPackageType>None</WindowsPackageType>
 
+		<!-- AOT is disabled only for Linux command line Release builds: MSBuild
+		     shells out to /bin/bash and the bundled binutils, which NixOS does
+		     not provide. Windows/Visual Studio keeps the default AOT. -->
+		<RunAOTCompilation Condition="$([MSBuild]::IsOSPlatform('linux')) And '$(RunAOTCompilation)' == ''">false</RunAOTCompilation>
+
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>

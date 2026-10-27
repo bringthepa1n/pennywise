@@ -179,6 +179,11 @@ Release APK pro odevzdání:
 dotnet build -f net9.0-android -c Release -p:AndroidPackageFormat=apk
 ```
 
+Na Linuxu se v `.csproj` automaticky vypíná AOT (`RunAOTCompilation=false` pro
+`IsOSPlatform('linux')`), protože AOT kompilátor volá systémový `/bin/bash` a
+`binutils`, které NixOS nemá. Na Windows ve Visual Studiu se AOT používá
+standardně a APK se sestaví normálně.
+
 ## Testovací scénář
 
 | Krok | Očekávaný výsledek | Stav |
