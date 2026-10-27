@@ -229,3 +229,10 @@ tématem, popisem a snímky. Do e-mailu učitele:
 - **Obsah:** odkaz na repozitář + krátké průvodní slovo
 
 Záložní ZIP (bez `bin/obj`): `git archive --prefix=PennyWise/ HEAD -o PennyWise.zip`.
+
+Celá historie repozitáře jde přenést jedním souborem (bez buildu):
+
+```bash
+git bundle create PennyWise-repo.bundle --all
+git clone PennyWise-repo.bundle PennyWise
+```
